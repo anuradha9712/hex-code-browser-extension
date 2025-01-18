@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "CSS Hex Code Converter",
+  "version": "1.0",
+  "description": "An advanced browser extension that updates and highlights color codes on webpages based on a predefined color mapping, ensuring seamless design adjustments and visualization.",
+  "permissions": ["scripting", "tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["colorMapping.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons.png",
+    "48": "icons.png",
+    "128": "icons.png"
+  }
+}
