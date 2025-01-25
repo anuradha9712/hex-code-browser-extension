@@ -80,7 +80,9 @@
   }
 
   // Load saved colors and execute the function with a delay
-  chrome.storage.sync.get(['naBorderColor', 'mappedBorderColor'], (data) => {
+  chrome.storage.sync.get(['naBorderColor', 'mappedBorderColor', 'colorMapping'], (data) => {
+    const userColorMapping = data.colorMapping || {};
+    window.colorMapping = { ...window.colorMapping, ...userColorMapping };
     const naBorderColor = data.naBorderColor || '#ff0000';
     const mappedBorderColor = data.mappedBorderColor || '#ffff00';
     setTimeout(() => {
@@ -92,6 +94,15 @@
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.naBorderColor && message.mappedBorderColor) {
       updateColorsInDOM(message.naBorderColor, message.mappedBorderColor);
+    }
+    if (message.updateColors) {
+      chrome.storage.sync.get(['naBorderColor', 'mappedBorderColor', 'colorMapping'], (data) => {
+        const userColorMapping = data.colorMapping || {};
+        window.colorMapping = { ...window.colorMapping, ...userColorMapping };
+        const naBorderColor = data.naBorderColor || '#ff0000';
+        const mappedBorderColor = data.mappedBorderColor || '#ffff00';
+        updateColorsInDOM(naBorderColor, mappedBorderColor);
+      });
     }
   });
 
@@ -107,7 +118,9 @@
   // Observe changes in the DOM to handle dynamic content
   const observer = new MutationObserver(
     debounce(() => {
-      chrome.storage.sync.get(['naBorderColor', 'mappedBorderColor'], (data) => {
+      chrome.storage.sync.get(['naBorderColor', 'mappedBorderColor', 'colorMapping'], (data) => {
+        const userColorMapping = data.colorMapping || {};
+        window.colorMapping = { ...window.colorMapping, ...userColorMapping };
         const naBorderColor = data.naBorderColor || '#ff0000';
         const mappedBorderColor = data.mappedBorderColor || '#ffff00';
         updateColorsInDOM(naBorderColor, mappedBorderColor);

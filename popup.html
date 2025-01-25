@@ -13,25 +13,44 @@
       display: block;
       margin-top: 10px;
     }
-    input[type="color"] {
+    input[type="text"] {
       margin-top: 5px;
     }
     button {
       margin-top: 10px;
     }
     #color-picker-container {
-      width: 200px;
+      width: 400px;
+    }
+    .mapping-item {
+      display: flex;
+      align-items: center;
+      margin-top: 5px;
+    }
+    .mapping-item input {
+      margin-right: 5px;
+    }
+    .mapping-item button {
+      margin-left: 5px;
     }
   </style>
 </head>
 <body>
   <div id="color-picker-container">
     <label for="na-border-color">Select NA Border Color:</label>
-    <input type="color" id="na-border-color" name="na-border-color" value="#ff0000">
+    <input type="text" id="na-border-color" name="na-border-color" value="#ff0000">
     <label for="mapped-border-color">Select Mapped Border Color:</label>
-    <input type="color" id="mapped-border-color" name="mapped-border-color" value="#ffff00">
+    <input type="text" id="mapped-border-color" name="mapped-border-color" value="#ffff00">
     <br />
     <button id="apply-colors">Apply Colors</button>
+    <hr>
+    <h3>Color Mappings</h3>
+    <div id="color-mappings"></div>
+    <label for="new-color">New Color:</label>
+    <input type="text" id="new-color" name="new-color" value="#ffffff">
+    <label for="new-mapping">New Mapping:</label>
+    <input type="text" id="new-mapping" name="new-mapping" placeholder="var(--new-color)">
+    <button id="add-mapping">Add Mapping</button>
   </div>
   <script src="popup.js"></script>
 </body>
