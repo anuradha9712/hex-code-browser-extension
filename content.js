@@ -1,10 +1,9 @@
 (function () {
-
-  console.log('hex color updated with mapping', colorMapping)
+  console.log('hex color updated with mapping', colorMapping);
 
   // Function to replace colors and add borders
-  function updateColorsInDOM() {
-    const allElements = document.querySelectorAll("*");
+  function updateColorsInDOM(naBorderColor, mappedBorderColor) {
+    const allElements = document.querySelectorAll("body, body *");
 
     // Helper to convert RGB or RGBA to Hex
     const rgbToHex = (rgb) => {
@@ -20,12 +19,12 @@
     const applyColorUpdate = (element, property, color) => {
       const mappedColor = colorMapping[color];
       if (mappedColor === "NA") {
-        // Add a red border if the mapping is NA
-        element.style.border = "2px solid red";
+        // Add a border if the mapping is NA
+        element.style.outline = `2px solid ${naBorderColor}`;
       } else if (mappedColor) {
-        // Apply the mapped color and a yellow border
+        // Apply the mapped color and a border
         element.style[property] = mappedColor;
-        element.style.border = "2px solid yellow";
+        element.style.outline = `2px solid ${mappedBorderColor}`;
       }
     };
 
@@ -48,6 +47,11 @@
 
     // Check styles applied via class names (from stylesheets)
     Array.from(document.styleSheets).forEach((styleSheet) => {
+      // Skip stylesheets from fonts.googleapis.com
+      if (styleSheet.href && styleSheet.href.includes('fonts.googleapis.com')) {
+        return;
+      }
+
       try {
         Array.from(styleSheet.cssRules || []).forEach((rule) => {
           if (rule.style && (rule.style.backgroundColor || rule.style.color)) {
@@ -75,6 +79,41 @@
     });
   }
 
-  // Execute the function
-  updateColorsInDOM();
+  // Load saved colors and execute the function with a delay
+  chrome.storage.sync.get(['naBorderColor', 'mappedBorderColor'], (data) => {
+    const naBorderColor = data.naBorderColor || '#ff0000';
+    const mappedBorderColor = data.mappedBorderColor || '#ffff00';
+    setTimeout(() => {
+      updateColorsInDOM(naBorderColor, mappedBorderColor);
+    }, 1000); // Adjust the delay as needed
+  });
+
+  // Listen for messages from the popup
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.naBorderColor && message.mappedBorderColor) {
+      updateColorsInDOM(message.naBorderColor, message.mappedBorderColor);
+    }
+  });
+
+  // Debounce function to limit the frequency of calls
+  function debounce(fn, delay) {
+    let timeoutId;
+    return function (...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => fn(...args), delay);
+    };
+  }
+
+  // Observe changes in the DOM to handle dynamic content
+  const observer = new MutationObserver(
+    debounce(() => {
+      chrome.storage.sync.get(['naBorderColor', 'mappedBorderColor'], (data) => {
+        const naBorderColor = data.naBorderColor || '#ff0000';
+        const mappedBorderColor = data.mappedBorderColor || '#ffff00';
+        updateColorsInDOM(naBorderColor, mappedBorderColor);
+      });
+    }, 1000) // Adjust the debounce delay as needed
+  );
+
+  observer.observe(document.body, { childList: true, subtree: true });
 })();

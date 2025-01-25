@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Picker Popup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="color"] {
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 10px;
+    }
+    #color-picker-container {
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div id="color-picker-container">
+    <label for="na-border-color">Select NA Border Color:</label>
+    <input type="color" id="na-border-color" name="na-border-color" value="#ff0000">
+    <label for="mapped-border-color">Select Mapped Border Color:</label>
+    <input type="color" id="mapped-border-color" name="mapped-border-color" value="#ffff00">
+    <br />
+    <button id="apply-colors">Apply Colors</button>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
