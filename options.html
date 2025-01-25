@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Extension Options</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="color"] {
+      margin-left: 10px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Customize Border Colors</h1>
+  <form id="options-form">
+    <label>
+      Border color for updated elements:
+      <input type="color" id="updatedColor" />
+    </label>
+    <label>
+      Border color for no mapping:
+      <input type="color" id="noMappingColor" />
+    </label>
+    <button type="submit">Save</button>
+  </form>
+  <p id="status" style="color: green; margin-top: 20px; display: none;">Options saved!</p>
+  <script src="options.js"></script>
+</body>
+</html>

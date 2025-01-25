@@ -1,6 +1,9 @@
 (function () {
+  console.log("hex color updated with mapping", colorMapping);
 
-  console.log('hex color updated with mapping', colorMapping)
+  // Default border colors
+  let naBorderColor = "red"; // Default for "NA"
+  let validBorderColor = "yellow"; // Default for valid mappings
 
   // Function to replace colors and add borders
   function updateColorsInDOM() {
@@ -20,12 +23,12 @@
     const applyColorUpdate = (element, property, color) => {
       const mappedColor = colorMapping[color];
       if (mappedColor === "NA") {
-        // Add a red border if the mapping is NA
-        element.style.border = "2px solid red";
+        // Add a border using the user-specified NA color
+        element.style.border = `2px solid ${naBorderColor}`;
       } else if (mappedColor) {
-        // Apply the mapped color and a yellow border
+        // Apply the mapped color and add a border using the user-specified valid color
         element.style[property] = mappedColor;
-        element.style.border = "2px solid yellow";
+        element.style.border = `2px solid ${validBorderColor}`;
       }
     };
 
@@ -75,6 +78,41 @@
     });
   }
 
-  // Execute the function
+  // Function to prompt users for colors
+  function promptUserForColors() {
+    const naColor = prompt("Enter the border color for 'NA' mappings (e.g., red, #ff0000):", naBorderColor);
+    const validColor = prompt("Enter the border color for valid mappings (e.g., yellow, #ffff00):", validBorderColor);
+
+    // Update the border colors if valid inputs are provided
+    if (naColor) naBorderColor = naColor;
+    if (validColor) validBorderColor = validColor;
+
+    // Reapply updates with the new colors
+    updateColorsInDOM();
+  }
+
+  // Add a button to let users set the border colors
+  const button = document.createElement("button");
+  button.textContent = "Set Border Colors";
+  button.style.position = "fixed";
+  button.style.bottom = "10px";
+  button.style.right = "10px";
+  button.style.zIndex = "10000";
+  button.style.padding = "10px 15px";
+  button.style.backgroundColor = "#007bff";
+  button.style.color = "white";
+  button.style.border = "none";
+  button.style.borderRadius = "5px";
+  button.style.cursor = "pointer";
+  button.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.2)";
+  document.body.appendChild(button);
+
+  // Add click event listener to the button
+  button.addEventListener("click", () => {
+    promptUserForColors();
+    updateColorsInDOM(); // Ensure borders are applied after color selection
+  });
+
+  // Initial execution
   updateColorsInDOM();
 })();
