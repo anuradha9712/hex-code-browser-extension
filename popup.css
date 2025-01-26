@@ -54,3 +54,12 @@ img {
   width: 32px;
   height: auto;
 }
+
+#color-mappings {
+  max-height: 200px;
+  overflow: scroll;
+}
+
+.color-mapping-heading {
+  margin-bottom: 0;
+}
