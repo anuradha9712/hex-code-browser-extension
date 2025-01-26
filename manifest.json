@@ -3,7 +3,7 @@
   "name": "CSS Hex Code Converter",
   "version": "1.0",
   "author": "Anuradha Aggarwal",
-  "description": "An browser extension that updates & highlights color codes on webpages based on a predefined color mappings, with support for updating color mappings through UI.",
+  "description": "An extension that updates & highlights color codes on webpages based on a predefined color mappings, with color mapping customization options.",
   "permissions": ["scripting", "tabs", "storage"],
   "background": {
     "service_worker": "background.js"
